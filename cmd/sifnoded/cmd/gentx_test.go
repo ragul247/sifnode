@@ -3,7 +3,9 @@ package cmd_test
 import (
 	"bytes"
 	"encoding/json"
+	"io/ioutil"
 	"log"
+	"os"
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/server"
@@ -20,18 +22,31 @@ import (
 )
 
 func TestGenTxCmd(t *testing.T) {
-	rootCmd, _ := sifnodedcmd.NewRootCmd()
-	buf := new(bytes.Buffer)
-	rootCmd.SetOut(buf)
-	rootCmd.SetErr(buf)
-	rootCmd.SetArgs([]string{"add-genesis-validators", "sifvaloper1rwqp4q88ue83ag3kgnmxxypq0td59df4782tjn"})
+	homeDir, err := ioutil.TempDir("", "")
+	require.NoError(t, err)
+	defer os.RemoveAll(homeDir)
+
+	initCmd, _ := sifnodedcmd.NewRootCmd()
+	initBuf := new(bytes.Buffer)
+	initCmd.SetOut(initBuf)
+	initCmd.SetErr(initBuf)
+	initCmd.SetArgs([]string{"init", "test", "--home=" + homeDir})
+
+	addValCmd, _ := sifnodedcmd.NewRootCmd()
+	addValBuf := new(bytes.Buffer)
+	addValCmd.SetOut(addValBuf)
+	addValCmd.SetErr(addValBuf)
+	addValCmd.SetArgs([]string{"add-genesis-validators", "sifvaloper1rwqp4q88ue83ag3kgnmxxypq0td59df4782tjn", "--home=" + homeDir})
 
 	app.SetConfig(true)
 
-	err := svrcmd.Execute(rootCmd, app.DefaultNodeHome);
+	err = svrcmd.Execute(initCmd, homeDir);
 	require.NoError(t, err)
 
-	serverCtx := server.GetServerContextFromCmd(rootCmd)
+	err = svrcmd.Execute(addValCmd, homeDir);
+	require.NoError(t, err)
+
+	serverCtx := server.GetServerContextFromCmd(addValCmd)
 	config := serverCtx.Config
 
 	genFile := config.GenesisFile()
