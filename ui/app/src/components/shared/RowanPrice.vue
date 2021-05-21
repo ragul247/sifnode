@@ -42,7 +42,7 @@ export default defineComponent({
 <template>
   <div class="container">
     <div v-if="rowanUSD" class="rowan">
-      <Pill color="primary">
+      <Pill hasIcon="true" color="primary">
         <img class="image" src="../../../public/images/siflogo.png" />
         <div>
           {{ rowanUSD }}
@@ -60,7 +60,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .rowan {
   .image {
-    height: 16px;
+    height: 18px;
     margin-right: 4px;
   }
 }

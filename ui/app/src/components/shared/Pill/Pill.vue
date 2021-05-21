@@ -2,10 +2,14 @@
 export default {
   props: {
     color: "primary" | "info" | "danger",
+    hasIcon: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
-    const { color } = props;
-    return { classes: { [color]: true, pill: true } };
+    const { color, hasIcon } = props;
+    return { classes: { [color]: true, pill: true, "has-icon": hasIcon } };
   },
 };
 </script>
@@ -21,14 +25,18 @@ export default {
 .container {
 }
 .pill {
+  font-family: "Inter", sans-serif;
   border: 2px solid #d4b553;
   color: #d4b553;
   font-weight: 600;
   border-radius: 20px;
-  padding: 0px 8px 0px 4px;
+  padding: 0px 8px 0px 8px;
   display: inline-block;
   background: #000;
   display: flex;
+}
+.pill.has-icon {
+  padding: 0px 8px 0px 3px;
 }
 .primary {
   border: 2px solid #d4b553;
