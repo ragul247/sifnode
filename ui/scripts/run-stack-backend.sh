@@ -14,9 +14,7 @@ IMAGE_NAME=$(cat ./scripts/latest)
 [[ ! -z "$(docker ps -qaf name=sif-ui-stack)" ]] && docker stop sif-ui-stack && docker rm sif-ui-stack
 
 # this runs a docker image built by the build command
-# the image temporarily will be pulled from dockerhub 
-# but at a point soon will be transferred to our GH actions repo
-docker run $IT \
+docker create $IT \
   -p 1317:1317 \
   -p 7545:7545 \
   -p 26656:26656 \
@@ -24,3 +22,9 @@ docker run $IT \
   --name sif-ui-stack \
   --platform linux/amd64 \
   $IMAGE_NAME
+
+# Need to copy abi dependencies for frontend
+mkdir -p ../smart-contracts/build/contracts
+docker cp sif-ui-stack:/sif/smart-contracts/build/contracts/BridgeBank.json ../smart-contracts/build/contracts/
+
+docker start -ai sif-ui-stack
