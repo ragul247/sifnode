@@ -5,7 +5,6 @@
   "license": "UNLICENSED",
   "scripts": {
     "advance": "zx ./scripts/advance.mjs",
-    "build-storybook": "build-storybook",
     "build": "zx ./scripts/build.mjs",
     "dev": "zx ./scripts/dev.mjs",
     "e2e": "zx ./scripts/e2e.mjs",
@@ -13,7 +12,7 @@
     "prepare": "cd .. && husky install ./ui/.husky",
     "stack": "./scripts/stack.sh",
     "start": "zx ./scripts/start.mjs",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "zx ./scripts/storybook.mjs",
     "test": "zx ./scripts/test.mjs"
   },
   "devDependencies": {
