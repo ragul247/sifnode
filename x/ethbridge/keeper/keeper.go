@@ -46,9 +46,9 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 
 // ProcessClaim processes a new claim coming in from a validator
 func (k Keeper) ProcessClaim(ctx sdk.Context, claim *types.EthBridgeClaim) (oracletypes.Status, error) {
-	logger := k.Logger(ctx)
 	oracleClaim, err := types.CreateOracleClaimFromEthClaim(claim)
 	if err != nil {
+		logger := k.Logger(ctx)
 		logger.Error("failed to create oracle claim from eth claim.",
 			errorMessageKey, err.Error())
 		return oracletypes.Status{}, err

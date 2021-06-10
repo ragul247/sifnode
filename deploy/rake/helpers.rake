@@ -100,6 +100,7 @@ def detect_os
 end
 
 def safe_system(cmd)
+  puts "run system cmd: #{cmd}"
   if (!system(cmd))
     STDERR.puts("System cmd failed: #{cmd}")
   end
